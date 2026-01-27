@@ -21,6 +21,7 @@ Repositorio que tiene como objetivo la consecución de los siguientes puntos:
   - [netowrking](#netowrking)
   - [setup](#setup)
 - [OpenTofu configuration](#opentofu-configuration)
+  - [Recursos desplegados](#recursos-desplegados)
 
 ## Entorno de desarollo
 
@@ -60,3 +61,22 @@ de opentofu haciendo uso de la tecnología devcontainer se incluyen una serie
 de extensiones básicas y se ajusta el modo editor del IDE.
 
 ## OpenTofu configuration
+
+La configuración de OpenTofu es la misma a realizar para Terraform, esta la
+componen los ficheros:
+
+- terraform.tf -> donde se define la versión requerida y la instancia para el
+  provider de AWS.
+- provider.tf -> donde se configura la instancia del provider de AWS creada.
+  - se mokean las credenciales de acceso a cuenta ya que se usa con LocalStack.
+  - se skipean la validación de credenciales y las request al account ID para
+    evitar problemas con STS.
+  - se apuntan los servicios al CONTAINER_PORT del service de localstack
+
+### Recursos desplegados
+
+Para la validación y consulta de los recursos deplegados se accede a la
+plataforma que el framework LocalStack provee tras previo registro gratuito
+[LocalStack Platform](https://app.localstack.cloud/inst/default/resources/ec2/instances)
+y desde donde se pueden ver accediendo a la instancia creada desde el localhost
+en https://localhost.localstack.cloud:4566
