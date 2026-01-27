@@ -1,0 +1,85 @@
+{
+  "name": "Opentofu Devcontainer",
+  "dockerComposeFile": "../docker-compose.yml",
+  "service": "opentofu",
+  "workspaceFolder": "/workspace",
+  "shutdownAction": "stopCompose",
+  "features": {
+    "ghcr.io/devcontainers/features/common-utils:2": {
+        "configureZshAsDefaultShell": true
+    },
+    "ghcr.io/devcontainers-extra/features/zsh-plugins:0": {
+        "plugins": "git aws common-aliases fzf F-Sy-H fzf-zsh-plugin zsh-autosuggestions zsh-syntax-highlighting",
+        "omzPlugins": "https://github.com/z-shell/F-Sy-H https://github.com/unixorn/fzf-zsh-plugin.git https://github.com/zsh-users/zsh-autosuggestions https://github.com/zsh-users/zsh-syntax-highlighting.git"
+    }
+  },
+  "postCreateCommand": "cp .devcontainer/zshrc ~/.zshrc",
+  "customizations": {
+    "vscode": {
+      "extensions": [
+        "ms-azuretools.vscode-docker",
+        "ms-azuretools.vscode-containers",
+        "eamodio.gitlens",
+        "yzhang.markdown-all-in-one",
+        "redhat.vscode-yaml",
+        "timonwong.shellcheck",
+        "mutantdino.resourcemonitor",
+        "4ops.terraform"
+      ],
+      "settings": {
+        /* ---------------- Terminal ---------------- */
+        "terminal.integrated.defaultProfile.linux": "zsh",
+        "terminal.integrated.profiles.linux": {
+          "bash": {
+            "path": "bash",
+            "icon": "terminal-bash"
+          },
+          "zsh": {
+            "path": "zsh"
+          },
+          "fish": {
+            "path": "fish"
+          },
+          "tmux": {
+            "path": "tmux",
+            "icon": "terminal-tmux"
+          },
+          "pwsh": {
+            "path": "pwsh",
+            "icon": "terminal-powershell"
+          }
+        },
+        /* ------------ Terraform / OpenTofu ------------*/
+        "[terraform]": {
+          "editor.defaultFormatter": "4ops.terraform"
+        },
+        "[tfvars]": {
+          "editor.defaultFormatter": "4ops.terraform"
+        },
+        /* ---------------- Editor ----------------*/
+        "editor.bracketPairColorization.enabled": true,
+        "editor.guides.bracketPairs": "active",
+        "editor.inlineSuggest.enabled": true,
+        "editor.linkedEditing": true,
+        "editor.multiCursorModifier": "alt",
+        "editor.renderControlCharacters": true,
+        "editor.renderWhitespace": "all",
+        "editor.rulers": [
+          {
+            "color": "#A5FF90",
+            "column": 80
+          },
+          {
+            "color": "#FF628C",
+            "column": 100
+          }
+        ],
+        "editor.stickyScroll.enabled": true,
+        "editor.suggestSelection": "first",
+        "editor.tabCompletion": "on",
+        "editor.tabSize": 2,
+        "files.trimTrailingWhitespace": true
+      }
+    }
+  }
+}
