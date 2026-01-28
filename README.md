@@ -20,8 +20,9 @@ Repositorio que tiene como objetivo la consecución de los siguientes puntos:
   - [opentofu service](#opentofu-service)
   - [netowrking](#netowrking)
   - [setup](#setup)
-- [OpenTofu configuration](#opentofu-configuration)
+- [Terraform configuration](#terraform-configuration)
   - [Recursos desplegados](#recursos-desplegados)
+- [Terraform environments](#terraform-environments)
 
 ## Entorno de desarollo
 
@@ -60,10 +61,10 @@ Adicionalmente y para definir un setup de desarrollo cómodo, sobre el servicio
 de opentofu haciendo uso de la tecnología devcontainer se incluyen una serie
 de extensiones básicas y se ajusta el modo editor del IDE.
 
-## OpenTofu configuration
+## Terraform configuration
 
-La configuración de OpenTofu es la misma a realizar para Terraform, esta la
-componen los ficheros:
+La configuración de Terraform la componen principalmente los siguientes
+ficheros:
 
 - terraform.tf -> donde se define la versión requerida y la instancia para el
   provider de AWS.
@@ -73,6 +74,11 @@ componen los ficheros:
     evitar problemas con STS.
   - se apuntan los servicios al CONTAINER_PORT del service de localstack
 
+> Pese a hablar de la configuración de Terraform en todo momento, el despliegue
+> de la infraestructura se realiza haciendo uso del framework OpenTofu y por
+> ende de sus comendos asociados, ya que este framework hereda la configuración
+> de Terraform.
+
 ### Recursos desplegados
 
 Para la validación y consulta de los recursos deplegados se accede a la
@@ -80,3 +86,50 @@ plataforma que el framework LocalStack provee tras previo registro gratuito
 [LocalStack Platform](https://app.localstack.cloud/inst/default/resources/ec2/instances)
 y desde donde se pueden ver accediendo a la instancia creada desde el localhost
 en https://localhost.localstack.cloud:4566
+
+## Terraform environments
+
+Terraform dispone de la funcionalidad de definir Workspaces con los que
+permitir cambiar entre entornos mediante consola y que la lógica de despliegue
+de la infraestructura recaiga en el Workspace seleccionado.
+
+Pero estos Workspaces son demasido rígidos, no permiten la definición de
+backends distintos entre entornos (cosa que no es deseada pero no dan
+siquiera la opción) y si no se usan Clouds remotos que permitan trabajar
+directamente con los Workspaces (se nota que están pensados para operar muy
+bien con Terraform Cloud) pueden generar más inconvenientes que facilidades
+como imposibilidad de definir restricciones en los apply según entorno.
+
+Por ello, para la generación de los entornos aislados de dev, pre y pro se
+adopta la solución de aislarlos entre sí en distintas carpetas y que el punto
+común de ellos sea la infraestructura definida en módulos compartidos.
+Permitiendo así el desarrollo de nuevos módulos de forma ágil en el entorno
+dev desplegando en LocalStack los módulos involucrados en la arquitectura
+desarrollada, y disponiendo de los entornos pre y pro separados por la capa
+lógica que permite introducir diferencias entre ellos como cuando tener activos
+los lanzamientos automáticos de procesos como ejemplo.
+
+```
+infra/
+├── dev/
+|   └── backend.tf
+│   └── main.tf
+|   └── providers.tf
+|   └── terraform.tf
+│
+├── pre/
+|   └── backend.tf
+|   └── config.remote.tfbackend
+│   └── main.tf
+|   └── providers.tf
+|   └── terraform.tf
+│
+├── pro/
+|   └── backend.tf
+|   └── config.remote.tfbackend
+│   └── main.tf
+|   └── providers.tf
+|   └── terraform.tf
+│
+└── modules/
+```
