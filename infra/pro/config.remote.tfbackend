@@ -1,4 +1,4 @@
-bucket         = "<account_id>-tofu-state-bucket"
+bucket         = "<management_account_id>-tofu-state-bucket"
 region         = "eu-west-1"
 key            = "pro/terraform.tfstate"
 dynamodb_table = "pro-tofu-state-lock"
