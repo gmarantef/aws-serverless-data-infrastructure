@@ -17,4 +17,4 @@ RUN apk add --no-cache \
 
 
 # Your application setup
-WORKDIR /workspace
+WORKDIR /home/vscode/workspace

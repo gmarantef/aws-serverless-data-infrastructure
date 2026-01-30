@@ -15,6 +15,7 @@ services:
     environment:
       # LocalStack configuration: https://docs.localstack.cloud/references/configuration/
       - DEBUG=${DEBUG:-0}
+      - PERSISTENCE=1
     volumes:
       - type: volume
         source: localstack-vol
@@ -26,7 +27,11 @@ services:
     volumes:
         - type: bind
           source: .
-          target: /workspace
+          target: /home/vscode/workspace
+        - type: bind
+          source: ${HOME}/.aws
+          target: /home/vscode/.aws
+          read_only: true
     networks:
       - infra-net
     depends_on:
